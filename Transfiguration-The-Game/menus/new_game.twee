@@ -1,23 +1,117 @@
 ::New Game
-<<set $player to {family:{},pronouns:{}}>>
+<<set $player to {
+  family: {
+    parents: {
+      female: 0,
+      male: 0,
+      nonbinary: 0
+    },
+    siblings: {
+      older: {
+        female: 0,
+        male: 0,
+        nonbinary: 0
+      },
+      twin: {
+        female: 0,
+        male: 0,
+        nonbinary: 0
+      },
+      younger: {
+        female: 0,
+        male: 0,
+        nonbinary: 0
+      }
+    },
+    pets: {
+      dog: {
+        female: 0,
+        male: 0
+      },
+      cat: {
+        female: 0,
+        male: 0
+      }
+    }
+  },
+  pronouns: {
+
+  }
+}>>
+<<set _radiochoice to {}>>
 <center><h2>Character Creation</h2></center>
 <p>
-What gender were you assigned at birth?<br>
-<label><<radiobutton "$player.agab" "Male">> Male</label><br>
-<label><<radiobutton "$player.agab" "Female">> Female</label>
+  What gender were you assigned at birth?<br>
+  <div class="radiochoice" id="agab">
+    <span id="male"><<link "Male">>
+        <<if $player.agab neq "male">>
+          <<set $player.agab to "male">>
+          <<addclass "#agab #male" "radiochoice-chosen">>
+          <<removeclass "#agab #female" "radiochoice-chosen">>
+        <</if>><</link>></span>
+     |
+    <span id="female"><<link "Female">>
+        <<if $player.agab neq "female">>
+          <<set $player.agab to "female">>
+          <<addclass "#agab #female" "radiochoice-chosen">>
+          <<removeclass "#agab #male" "radiochoice-chosen">>
+        <</if>><</link>></span>
+  </div>
 </p>
+
 <p>
-What pronouns do you use? (This can be changed later)<br>
-<label><<checkbox "$player.pronouns.he" true false>> He</label><br>
-<label><<checkbox "$player.pronouns.she" true false>> She</label><br>
-<label><<checkbox "$player.pronouns.they" true false>> They</label><br>
-<label><<checkbox "$player.pronouns.ne" true false>> Ne</label><br>
-<label><<checkbox "$player.pronouns.ve" true false>> Ve</label><br>
-<label><<checkbox "$player.pronouns.xe" true false>> Xe</label><br>
-<label><<checkbox "$player.pronouns.ze" true false>> Ze</label>
+  What pronoun(s) do you use? (This can be changed later)<br>
+  <div class="checkchoice" id="pronouns">
+    <span id="he"><<link "He">>
+        <<if $player.pronouns.he neq true>>
+          <<set $player.pronouns.he to true>>
+          <<addclass "#pronouns #he" "checkchoice-checked">>
+          <<set $player.pronouns.none to false>>
+          <<removeclass "#pronouns #none" "checkchoice-checked">>
+        <<else>>
+          <<set $player.pronouns.he to false>>
+          <<removeclass "#pronouns #he" "checkchoice-checked">>
+        <</if>><</link>></span>
+     |
+    <span id="she"><<link "She">>
+        <<if $player.pronouns.she neq true>>
+          <<set $player.pronouns.she to true>>
+          <<addclass "#pronouns #she" "checkchoice-checked">>
+          <<set $player.pronouns.none to false>>
+          <<removeclass "#pronouns #none" "checkchoice-checked">>
+        <<else>>
+          <<set $player.pronouns.she to false>>
+          <<removeclass "#pronouns #she" "checkchoice-checked">>
+        <</if>><</link>></span>
+     |
+    <span id="they"><<link "They">>
+        <<if $player.pronouns.they neq true>>
+          <<set $player.pronouns.they to true>>
+          <<addclass "#pronouns #they" "checkchoice-checked">>
+          <<set $player.pronouns.none to false>>
+          <<removeclass "#pronouns #none" "checkchoice-checked">>
+        <<else>>
+          <<set $player.pronouns.they to false>>
+          <<removeclass "#pronouns #they" "checkchoice-checked">>
+        <</if>><</link>></span>
+     |
+    <span id="none"><<link "None">>
+        <<if $player.pronouns.none neq true>>
+          <<set $player.pronouns.none to true>>
+          <<addclass "#pronouns #none" "checkchoice-checked">>
+          <<set $player.pronouns.he to false>>
+          <<set $player.pronouns.she to false>>
+          <<set $player.pronouns.they to false>>
+          <<removeclass "#pronouns :not(#none)" "checkchoice-checked">>
+        <<else>>
+          <<set $player.pronouns.none to false>>
+          <<removeclass "#pronouns #none" "checkchoice-checked">>
+        <</if>><</link>></span>
+  </div>
 </p>
+
 <p>
-What was the name given by your parants?<br>
+What was the name given to you by your parants?<br>
 <<textbox "$player.givenname" "">>
 </p>
 <p>
@@ -25,9 +119,65 @@ What is your current name?<br>
 <<textbox "$player.name" "">>
 </p>
 
+<<link "Next">>
+  <<if $player.agab neq undefined>>
+    <<if $player.pronouns.he
+    or $player.pronouns.she
+    or $player.pronouns.they
+    or $player.pronouns.none>>
+      <<if $player.givenname neq "" and $player.name neq "">>
+        <<goto "Family Creation">>
+      <</if>>
+    <</if>>
+  <</if>>
+<</link>>
+
+::Family Creation
+<<set _mode to "simple">>
 <center><h2>Family Creation</h2></center>
+<center><p class="centered-full-border">
+Advanced creation mode
+<div class="radiochoice" id="family-creation-mode">
+  <span class="radiochoice-chosen" id="simple"><<link "Off">>
+      <<if _mode neq "simple">>
+        <<set _mode to "simple">>
+        <<addclass "#family-creation-mode #simple" "radiochoice-chosen">>
+        <<removeclass "#family-creation-mode #advanced" "radiochoice-chosen">>
+        <<addclass "#advanced-creation" "hide">>
+      <</if>><</link>></span>
+   |
+  <span id="advanced"><<link "On">>
+      <<if _mode neq "advanced">>
+        <<set _mode to "advanced">>
+        <<addclass "#family-creation-mode #advanced" "radiochoice-chosen">>
+        <<removeclass "#family-creation-mode #simple" "radiochoice-chosen">>
+        <<removeclass "#advanced-creation" "hide">>
+      <</if>><</link>></span>
+</div></p></center>
+
 <p>
-Are you an orphan?<br>
-<label><<radiobutton "$player.family.isorphan" true>> Yes</label><br>
-<label><<radiobutton "$player.family.isorphan" false>> No</label><br>
+  <div>
+    Female parents: <<print $player.family.parents.female>>
+     |
+    <<link "Add">><</link>>
+     |
+    <<link "Remove">><</link>>
+  <div>
+<<link "+">><</link>> Female parent <<link "-">><</link>><br>
+<<link "+">><</link>> Male parent <<link "-">><</link>><br>
+<<link "+">><</link>> Nonbinary parent <<link "-">><</link>><br>
+<<link "+">><</link>> Female older sibling <<link "-">><</link>><br>
+<<link "+">><</link>> Male older sibling <<link "-">><</link>><br>
+<<link "+">><</link>> Nonbinary older sibling <<link "-">><</link>><br>
+<<link "+">><</link>> Female twin <<link "-">><</link>><br>
+<<link "+">><</link>> Male twin <<link "-">><</link>><br>
+<<link "+">><</link>> Nonbinary twin <<link "-">><</link>><br>
+<<link "+">><</link>> Female younger sibling <<link "-">><</link>><br>
+<<link "+">><</link>> Male younger sibling <<link "-">><</link>><br>
+<<link "+">><</link>> Nonbinary younger sibling <<link "-">><</link>><br>
+<<link "+">><</link>> Female older sibling <<link "-">><</link>><br>
+<<link "+">><</link>> Male older sibling <<link "-">><</link>>
 </p>
+
+<div id="advanced-creation">
+</div>

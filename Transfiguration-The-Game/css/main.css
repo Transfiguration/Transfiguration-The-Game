@@ -4,6 +4,34 @@
   padding: 4px;
 }
 
+.centered-full-border {
+  width: 100%;
+  border-top: 1px dashed white;
+  border-bottom: 1px dashed white;
+}
+
+.radiochoice span a, .radiochoice div a {
+  color: aqua;
+  text-decoration: none;
+}
+.radiochoice span.radiochoice-chosen a, .radiochoice div.radiochoice-chosen a {
+  color: teal;
+  text-decoration: underline;
+}
+
+.checkchoice span a, .checkchoice div a {
+  color: lightgreen;
+  text-decoration: none;
+}
+.checkchoice span.checkchoice-checked a, .checkchoice div.checkchoice-checked a {
+  color: green;
+  text-decoration: underline;
+}
+
+.hide {
+  display: none;
+}
+
 footer {
   position: absolute;
   bottom: 0;
