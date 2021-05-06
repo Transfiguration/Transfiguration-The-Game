@@ -1,0 +1,10 @@
+::Start
+<center><h1>Main Menu</h1></center>
+<center>
+  <p>
+    <<link "New Game">><</link>><br>
+    <<link "Continue Game">><</link>><br>
+    <<link "Settings">><</link>><br>
+  </p>
+</center>
+<footer>Version: A.0.1.0</footer>
