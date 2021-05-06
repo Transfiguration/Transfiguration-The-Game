@@ -1,0 +1,33 @@
+::New Game
+<<set $player to {family:{},pronouns:{}}>>
+<center><h2>Character Creation</h2></center>
+<p>
+What gender were you assigned at birth?<br>
+<label><<radiobutton "$player.agab" "Male">> Male</label><br>
+<label><<radiobutton "$player.agab" "Female">> Female</label>
+</p>
+<p>
+What pronouns do you use? (This can be changed later)<br>
+<label><<checkbox "$player.pronouns.he" true false>> He</label><br>
+<label><<checkbox "$player.pronouns.she" true false>> She</label><br>
+<label><<checkbox "$player.pronouns.they" true false>> They</label><br>
+<label><<checkbox "$player.pronouns.ne" true false>> Ne</label><br>
+<label><<checkbox "$player.pronouns.ve" true false>> Ve</label><br>
+<label><<checkbox "$player.pronouns.xe" true false>> Xe</label><br>
+<label><<checkbox "$player.pronouns.ze" true false>> Ze</label>
+</p>
+<p>
+What was the name given by your parants?<br>
+<<textbox "$player.givenname" "">>
+</p>
+<p>
+What is your current name?<br>
+<<textbox "$player.name" "">>
+</p>
+
+<center><h2>Family Creation</h2></center>
+<p>
+Are you an orphan?<br>
+<label><<radiobutton "$player.family.isorphan" true>> Yes</label><br>
+<label><<radiobutton "$player.family.isorphan" false>> No</label><br>
+</p>

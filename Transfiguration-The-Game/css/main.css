@@ -1,6 +1,7 @@
 .passage {
   border: 1px solid white;
   border-radius: 7px;
+  padding: 4px;
 }
 
 footer {
