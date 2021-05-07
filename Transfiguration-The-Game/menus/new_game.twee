@@ -1,5 +1,5 @@
 ::New Game
-<<set $player to {
+<<set $player = {
   family: {
     parents: {
       female: 0,
@@ -38,21 +38,21 @@
 
   }
 }>>
-<<set _radiochoice to {}>>
+<<set _radiochoice = {}>>
 <center><h2>Character Creation</h2></center>
 <p>
   What gender were you assigned at birth?<br>
   <div class="radiochoice" id="agab">
     <span id="male"><<link "Male">>
         <<if $player.agab neq "male">>
-          <<set $player.agab to "male">>
+          <<set $player.agab = "male">>
           <<addclass "#agab #male" "radiochoice-chosen">>
           <<removeclass "#agab #female" "radiochoice-chosen">>
         <</if>><</link>></span>
      |
     <span id="female"><<link "Female">>
         <<if $player.agab neq "female">>
-          <<set $player.agab to "female">>
+          <<set $player.agab = "female">>
           <<addclass "#agab #female" "radiochoice-chosen">>
           <<removeclass "#agab #male" "radiochoice-chosen">>
         <</if>><</link>></span>
@@ -64,47 +64,47 @@
   <div class="checkchoice" id="pronouns">
     <span id="he"><<link "He">>
         <<if $player.pronouns.he neq true>>
-          <<set $player.pronouns.he to true>>
+          <<set $player.pronouns.he = true>>
           <<addclass "#pronouns #he" "checkchoice-checked">>
-          <<set $player.pronouns.none to false>>
+          <<set $player.pronouns.none = false>>
           <<removeclass "#pronouns #none" "checkchoice-checked">>
         <<else>>
-          <<set $player.pronouns.he to false>>
+          <<set $player.pronouns.he = false>>
           <<removeclass "#pronouns #he" "checkchoice-checked">>
         <</if>><</link>></span>
      |
     <span id="she"><<link "She">>
         <<if $player.pronouns.she neq true>>
-          <<set $player.pronouns.she to true>>
+          <<set $player.pronouns.she = true>>
           <<addclass "#pronouns #she" "checkchoice-checked">>
-          <<set $player.pronouns.none to false>>
+          <<set $player.pronouns.none = false>>
           <<removeclass "#pronouns #none" "checkchoice-checked">>
         <<else>>
-          <<set $player.pronouns.she to false>>
+          <<set $player.pronouns.she = false>>
           <<removeclass "#pronouns #she" "checkchoice-checked">>
         <</if>><</link>></span>
      |
     <span id="they"><<link "They">>
         <<if $player.pronouns.they neq true>>
-          <<set $player.pronouns.they to true>>
+          <<set $player.pronouns.they = true>>
           <<addclass "#pronouns #they" "checkchoice-checked">>
-          <<set $player.pronouns.none to false>>
+          <<set $player.pronouns.none = false>>
           <<removeclass "#pronouns #none" "checkchoice-checked">>
         <<else>>
-          <<set $player.pronouns.they to false>>
+          <<set $player.pronouns.they = false>>
           <<removeclass "#pronouns #they" "checkchoice-checked">>
         <</if>><</link>></span>
      |
     <span id="none"><<link "None">>
         <<if $player.pronouns.none neq true>>
-          <<set $player.pronouns.none to true>>
+          <<set $player.pronouns.none = true>>
           <<addclass "#pronouns #none" "checkchoice-checked">>
-          <<set $player.pronouns.he to false>>
-          <<set $player.pronouns.she to false>>
-          <<set $player.pronouns.they to false>>
+          <<set $player.pronouns.he = false>>
+          <<set $player.pronouns.she = false>>
+          <<set $player.pronouns.they = false>>
           <<removeclass "#pronouns :not(#none)" "checkchoice-checked">>
         <<else>>
-          <<set $player.pronouns.none to false>>
+          <<set $player.pronouns.none = false>>
           <<removeclass "#pronouns #none" "checkchoice-checked">>
         <</if>><</link>></span>
   </div>
@@ -133,22 +133,22 @@ What is your current name?<br>
 <</link>>
 
 ::Family Creation
-<<set _mode to "simple">>
+<<set _mode = "simple">>
 <center><h2>Family Creation</h2></center>
 <center><p class="centered-full-border">
 Advanced creation mode
 <div class="radiochoice" id="family-creation-mode">
   <span class="radiochoice-chosen" id="simple"><<link "Off">>
-      <<if _mode neq "simple">>
-        <<set _mode to "simple">>
+      <<if $family_create_mode neq "simple">>
+        <<set $family_create_mode = "simple">>
         <<addclass "#family-creation-mode #simple" "radiochoice-chosen">>
         <<removeclass "#family-creation-mode #advanced" "radiochoice-chosen">>
         <<addclass "#advanced-creation" "hide">>
       <</if>><</link>></span>
    |
   <span id="advanced"><<link "On">>
-      <<if _mode neq "advanced">>
-        <<set _mode to "advanced">>
+      <<if $family_create_mode neq "advanced">>
+        <<set $family_create_mode = "advanced">>
         <<addclass "#family-creation-mode #advanced" "radiochoice-chosen">>
         <<removeclass "#family-creation-mode #simple" "radiochoice-chosen">>
         <<removeclass "#advanced-creation" "hide">>
@@ -159,24 +159,183 @@ Advanced creation mode
   <div>
     Female parents: <<print $player.family.parents.female>>
      |
-    <<link "Add">><</link>>
+    <<link "Add">>
+      <<set $player.family.parents.female += 1>>
+      <<goto "Family Creation">>
+    <</link>>
      |
-    <<link "Remove">><</link>>
+    <<link "Remove">>
+      <<if $player.family.parents.female neq 0>>
+        <<set $player.family.parents.female -= 1>>
+        <<goto "Family Creation">>
+      <</if>>
+    <</link>>
+  </div>
   <div>
-<<link "+">><</link>> Female parent <<link "-">><</link>><br>
-<<link "+">><</link>> Male parent <<link "-">><</link>><br>
-<<link "+">><</link>> Nonbinary parent <<link "-">><</link>><br>
-<<link "+">><</link>> Female older sibling <<link "-">><</link>><br>
-<<link "+">><</link>> Male older sibling <<link "-">><</link>><br>
-<<link "+">><</link>> Nonbinary older sibling <<link "-">><</link>><br>
-<<link "+">><</link>> Female twin <<link "-">><</link>><br>
-<<link "+">><</link>> Male twin <<link "-">><</link>><br>
-<<link "+">><</link>> Nonbinary twin <<link "-">><</link>><br>
-<<link "+">><</link>> Female younger sibling <<link "-">><</link>><br>
-<<link "+">><</link>> Male younger sibling <<link "-">><</link>><br>
-<<link "+">><</link>> Nonbinary younger sibling <<link "-">><</link>><br>
-<<link "+">><</link>> Female older sibling <<link "-">><</link>><br>
-<<link "+">><</link>> Male older sibling <<link "-">><</link>>
+    Male parents: <<print $player.family.parents.male>>
+     |
+    <<link "Add">>
+      <<set $player.family.parents.male += 1>>
+      <<goto "Family Creation">>
+    <</link>>
+     |
+    <<link "Remove">>
+      <<if $player.family.parents.male neq 0>>
+        <<set $player.family.parents.male -= 1>>
+        <<goto "Family Creation">>
+      <</if>>
+    <</link>>
+  </div>
+  <div>
+    Nonbinary parents: <<print $player.family.parents.nonbinary>>
+     |
+    <<link "Add">>
+      <<set $player.family.parents.nonbinary += 1>>
+      <<goto "Family Creation">>
+    <</link>>
+     |
+    <<link "Remove">>
+      <<if $player.family.parents.nonbinary neq 0>>
+        <<set $player.family.parents.nonbinary -= 1>>
+        <<goto "Family Creation">>
+      <</if>>
+    <</link>>
+  </div>
+  <div>
+    Female older siblings: <<print $player.family.siblings.older.female>>
+     |
+    <<link "Add">>
+      <<set $player.family.siblings.older.female += 1>>
+      <<goto "Family Creation">>
+    <</link>>
+     |
+    <<link "Remove">>
+      <<if $player.family.siblings.older.female neq 0>>
+        <<set $player.family.siblings.older.female -= 1>>
+        <<goto "Family Creation">>
+      <</if>>
+    <</link>>
+  </div>
+  <div>
+    Male older siblings: <<print $player.family.siblings.older.male>>
+     |
+    <<link "Add">>
+      <<set $player.family.siblings.older.male += 1>>
+      <<goto "Family Creation">>
+    <</link>>
+     |
+    <<link "Remove">>
+      <<if $player.family.siblings.older.male neq 0>>
+        <<set $player.family.siblings.older.male -= 1>>
+        <<goto "Family Creation">>
+      <</if>>
+    <</link>>
+  </div>
+  <div>
+    Nonbinary older siblings: <<print $player.family.siblings.older.nonbinary>>
+     |
+    <<link "Add">>
+      <<set $player.family.siblings.older.nonbinary += 1>>
+      <<goto "Family Creation">>
+    <</link>>
+     |
+    <<link "Remove">>
+      <<if $player.family.siblings.older.nonbinary neq 0>>
+        <<set $player.family.siblings.older.nonbinary -= 1>>
+        <<goto "Family Creation">>
+      <</if>>
+    <</link>>
+  </div>
+  <div>
+    Female twins: <<print $player.family.siblings.twin.female>>
+     |
+    <<link "Add">>
+      <<set $player.family.siblings.twin.female += 1>>
+      <<goto "Family Creation">>
+    <</link>>
+     |
+    <<link "Remove">>
+      <<if $player.family.siblings.twin.female neq 0>>
+        <<set $player.family.siblings.twin.female -= 1>>
+        <<goto "Family Creation">>
+      <</if>>
+    <</link>>
+  </div>
+  <div>
+    Male twins: <<print $player.family.siblings.twin.male>>
+     |
+    <<link "Add">>
+      <<set $player.family.siblings.twin.male += 1>>
+      <<goto "Family Creation">>
+    <</link>>
+     |
+    <<link "Remove">>
+      <<if $player.family.siblings.twin.male neq 0>>
+        <<set $player.family.siblings.twin.male -= 1>>
+        <<goto "Family Creation">>
+      <</if>>
+    <</link>>
+  </div>
+  <div>
+    Nonbinary twins: <<print $player.family.siblings.twin.nonbinary>>
+     |
+    <<link "Add">>
+      <<set $player.family.siblings.twin.nonbinary += 1>>
+      <<goto "Family Creation">>
+    <</link>>
+     |
+    <<link "Remove">>
+      <<if $player.family.siblings.twin.nonbinary neq 0>>
+        <<set $player.family.siblings.twin.nonbinary -= 1>>
+        <<goto "Family Creation">>
+      <</if>>
+    <</link>>
+  </div>
+  <div>
+    Female younger siblings: <<print $player.family.siblings.younger.female>>
+     |
+    <<link "Add">>
+      <<set $player.family.siblings.younger.female += 1>>
+      <<goto "Family Creation">>
+    <</link>>
+     |
+    <<link "Remove">>
+      <<if $player.family.siblings.younger.female neq 0>>
+        <<set $player.family.siblings.younger.female -= 1>>
+        <<goto "Family Creation">>
+      <</if>>
+    <</link>>
+  </div>
+  <div>
+    Male younger siblings: <<print $player.family.siblings.younger.male>>
+     |
+    <<link "Add">>
+      <<set $player.family.siblings.younger.male += 1>>
+      <<goto "Family Creation">>
+    <</link>>
+     |
+    <<link "Remove">>
+      <<if $player.family.siblings.younger.male neq 0>>
+        <<set $player.family.siblings.younger.male -= 1>>
+        <<goto "Family Creation">>
+      <</if>>
+    <</link>>
+  </div>
+  <div>
+    Nonbinary younger siblings: <<print $player.family.siblings.younger.nonbinary>>
+     |
+    <<link "Add">>
+      <<set $player.family.siblings.younger.nonbinary += 1>>
+      <<goto "Family Creation">>
+    <</link>>
+     |
+    <<link "Remove">>
+      <<if $player.family.siblings.younger.nonbinary neq 0>>
+        <<set $player.family.siblings.younger.nonbinary -= 1>>
+        <<goto "Family Creation">>
+      <</if>>
+    <</link>>
+  </div>
 </p>
 
 <div id="advanced-creation">
